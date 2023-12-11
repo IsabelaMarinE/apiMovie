@@ -1,13 +1,20 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
+<<<<<<< HEAD
+=======
+var models = require('./models');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+require('dotenv').config();
+
+models.sequelize.sync();
+>>>>>>> a5b1a73 (Init project with controller services api)
 
 const app = express();
 
 //Router Files
-const gamesRouter = require('./routes/games');
-const playersRouter = require('./routes/players');
-const citiesRouter = require('./routes/cities');
+const moviesRouter = require('./routes/movies');
 
 //Configurations
 app.use(bodyparser.urlencoded({extended: true}));
@@ -18,8 +25,29 @@ app.use(cors({
   methods: ['GET','POST', 'OPTIONS']
 }));
 
-//Routes
-app.use('/api/city', citiesRouter);
-app.use('/api/player', playersRouter);
-app.use('/api/game', gamesRouter);
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Movies API',
+      version: '1.0.0',
+      description: 'A test Api',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+    ],
+  },
+  apis: ['./routes/*.js'],
+};
 
+//Routes
+app.use('/api/', moviesRouter);
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
+
+app.listen(process.env.PORT ? process.env.PORT : '3000' , () => {
+  console.log(`Server listen on http://localhost:3000`);
+});
