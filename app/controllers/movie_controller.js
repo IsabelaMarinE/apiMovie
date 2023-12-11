@@ -2,8 +2,9 @@ const movieServices = require('../services/movie.Service');
 
 exports.createMovie= async (req, res, next) => {
   const { body } = req;
+  console.log("body",body)
   try {
-    const newMovie =  await movieServices.createCity(body);
+    const newMovie =  await movieServices.createMovie(body);
     if(newMovie){
       res.status(200).json({
         items: newMovie,
@@ -50,9 +51,10 @@ exports.getAllMovies = async (req, res, next) => {
 }
 
 exports.updateMovieById = async (req, res, next) => {
+  const id = req.params.id;
   const { body } = req;
   try {
-    const movie =  await movieServices.updateMovie(body);
+    const movie =  await movieServices.updateMovie(id, body);
     if(movie){
       res.status(200).json({
         items: movie,
@@ -106,11 +108,10 @@ exports.deleteMovieById = async (req, res, next) => {
     if(isMovieDeleted){
       res.status(200).json({
         state: true,
-        error: ''
+        error: 'Deleted'
       })
     }else{
       res.status(204).json({
-        items: [],
         state: false,
         error: 'Not Found'
       })

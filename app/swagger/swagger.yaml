@@ -1,0 +1,275 @@
+openapi: 3.0.3
+info:
+  title: Swagger - MovieApi 1.0
+  description: Api Movie
+  version: 1.0.11
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: movie
+    description: Everything about your Movies
+paths:
+  /api/getListMovies:
+    get:
+      tags:
+        - movie
+      summary: Get list of Movies
+      description: List of Movies
+      operationId: getListMovies
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '204':
+          description: Movies not found
+  /api/getMovieById/{id_movie}:
+    get:
+      tags:
+        - movie
+      summary: Finds Movie by Id
+      description: Get the Details of movie by Id
+      operationId: getMovieById
+      parameters:
+        - name: id_movie
+          in: path
+          description: ID of movie to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+        '204':
+          description: Movies not found
+  /api/getWatchedMovies:
+    get:
+      tags:
+        - movie
+      summary: Finds te watched Movies
+      description: Return all the movies watched
+      operationId: geMoviesWatched
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieWatched'          
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MovieWatched'
+        '204':
+          description: Movies not found
+  /api/createMovie:
+    post:
+      tags:
+        - movie
+      summary: Create new Movie
+      description: Create a new movie
+      operationId: createMovie
+      requestBody:
+        description: Created movie object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateMovie'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/CreateMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateMovie'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Not found
+  /api/updatedMovieById/{id_movie}:
+    post:
+      tags:
+        - movie
+      summary: Update Movie
+      description: Update Movie by Id
+      operationId: updateMovie
+      parameters:
+        - name: id_movie
+          in: path
+          description: ID of movie to return
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Created movie object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatedMovie'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/UpdatedMovie'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UpdatedMovie'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        '404':
+          description: Not found
+  /api/deletMovieById/{id_movie}:
+    delete:
+      tags:
+        - movie
+      summary: Delete Movie
+      description: Delete Movie by Id
+      operationId: deleteMovieById
+      parameters:
+        - name: id_movie
+          in: path
+          description: ID of movie to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteMovie'          
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/DeleteMovie'
+        '404':
+          description: Not found
+components:
+  schemas:
+    Movie:
+      type: object
+      properties:
+        id_movie:
+          type: string
+          format: uiid
+          example: 10Aberder
+        title:
+          type: string
+          example: "Titanic"
+        description:
+          type: string
+          example: "A 100-year-old woman named Rose DeWitt Bukater tells a story about her voyage on the famous ship Titanic. She is sharing the story with her granddaughter, Lizzy Calvert, and a crew of men who are interested in the Titanic shipwreck. The members of the crew are named Brock Lovett, Lewis Bodine, Bobby Buell, and Anatoly Mikailavich. She tells the story while on the Keldysh. The men are on the Keldysh trying to find a famous necklace called The Heart of the Ocean that they think sank with the ship. She goes on to explain the whole story from the ship's departure to the sinking of Titanic on its first (and last) voyage at 2:20 in the morning on April 15, 1912. Most of the movie is not Old Rose telling the story, but Young Rose actually living the story."
+        watched:
+          type: boolean
+          example: false
+        created:
+          type: string
+          example: "2023/11/12"
+      xml:
+        name: movie
+    MovieWatched:
+      type: object
+      properties:
+        id_movie:
+          type: string
+          format: uiid
+          example: 10Aberder
+        title:
+          type: string
+          example: "Titanic"
+        description:
+          type: string
+          example: "A 100-year-old woman named Rose DeWitt Bukater tells a story about her voyage on the famous ship Titanic. She is sharing the story with her granddaughter, Lizzy Calvert, and a crew of men who are interested in the Titanic shipwreck. The members of the crew are named Brock Lovett, Lewis Bodine, Bobby Buell, and Anatoly Mikailavich. She tells the story while on the Keldysh. The men are on the Keldysh trying to find a famous necklace called The Heart of the Ocean that they think sank with the ship. She goes on to explain the whole story from the ship's departure to the sinking of Titanic on its first (and last) voyage at 2:20 in the morning on April 15, 1912. Most of the movie is not Old Rose telling the story, but Young Rose actually living the story."
+        watched:
+          type: boolean
+          example: true
+        created:
+          type: string
+          example: "2023/11/12"
+      xml:
+        name: moviewatched
+    CreateMovie:
+      required:
+        - title
+        - description
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Barbie"
+        description:
+          type: string
+          example: "Set in the colorful Barbie Land, stereotypical Barbie lives a perfect life every single day. One day, she shows signs of being...a human. "
+      xml:
+        name: createmovie
+    UpdatedMovie:
+      required:
+        - title
+        - description
+        - watched
+      type: object
+      properties:
+        title:
+          type: string
+          example: "Barbie"
+        description:
+          type: string
+          example: "Set in the colorful Barbie Land, stereotypical Barbie lives a perfect life every single day. One day, she shows signs of being...a human. "
+        watched:
+          type: boolean
+          example: true
+      xml:
+        name: updatedmovie
+    DeleteMovie:
+      type: object
+      properties:
+        state:
+          type: boolean
+          example: true
+        error:
+          type: string
+          example: "Deleted"
+      xml:
+        name: deletemovie
+  requestBodies:
+    Movie:
+      description: Novie object that needs to be added to the store
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateMovie'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/CreateMovie'

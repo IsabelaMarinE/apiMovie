@@ -1,5 +1,5 @@
 const Movie  = require('../models').Movie;
-const { Op } = require("sequelize");
+const crypto = require('crypto');
 
 const getAllMovies = async () => {
   try {
@@ -54,19 +54,22 @@ const createMovie = async (body) => {
     }
   });
   try {
+    const id = crypto.randomUUID();
     const newMovie = await Movie.create({
+      id_movie: id.trim(),
       title: title,
       description: description
     });
     return newMovie;
+    
   } catch (error) {
     throw new Error(error);
   }
 }
 
-const updateMovie = async (body) => {
+const updateMovie = async (id, body) => {
   try {
-    const movie = await Movie.findByPk(body.id_movie);
+    const movie = await Movie.findByPk(id);
     if(movie){
       movie.update({
         title: body.title ? body.title : movie.title,

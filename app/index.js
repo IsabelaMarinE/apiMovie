@@ -2,9 +2,11 @@ const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 var models = require('./models');
+const YAML = require('yamljs');
+var path = require('path');
 const swaggerUi = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc');
-require('dotenv').config();
+const url_swagger = path.resolve(__dirname, './swagger/swagger.yaml');
+const swaggerDocument = YAML.load(url_swagger);
 
 models.sequelize.sync();
 
@@ -22,29 +24,11 @@ app.use(cors({
   methods: ['GET','POST', 'OPTIONS']
 }));
 
-const swaggerOptions = {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Movies API',
-      version: '1.0.0',
-      description: 'A test Api',
-    },
-    servers: [
-      {
-        url: 'http://localhost:3000',
-      },
-    ],
-  },
-  apis: ['./routes/*.js'],
-};
-
 //Routes
 app.use('/api/', moviesRouter);
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
-app.listen(process.env.PORT ? process.env.PORT : '3000' , () => {
+app.listen('3000' , () => {
   console.log(`Server listen on http://localhost:3000`);
 });
