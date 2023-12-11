@@ -1,15 +1,12 @@
 const express = require('express');
 const bodyparser = require('body-parser');
 const cors = require('cors');
-<<<<<<< HEAD
-=======
 var models = require('./models');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 require('dotenv').config();
 
 models.sequelize.sync();
->>>>>>> a5b1a73 (Init project with controller services api)
 
 const app = express();
 
